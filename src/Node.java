@@ -35,7 +35,7 @@ class Node
         }
 
         this.dsts = new ArrayList();
-        this.affinity = -1;
+        this.affinity = null;
     }
 
     public void add_edge(Node dst, Integer dstport)

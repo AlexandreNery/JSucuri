@@ -13,4 +13,9 @@ class TagVal
         this.val = val;
     }
 
+    public String toString()
+    {
+        return "(" + tag + "," + val + ")";
+    }
+
 }

@@ -22,7 +22,8 @@ class Scheduler implements Comparator
 
     public Scheduler(DFGraph graph, Integer n_workers, boolean mpi_enabled)
     {
-        this.mpi_enabled = mpi_enabled;
+        this.mpi_enabled = mpi_enabled; //must always be false, for now at least...
+
         //this.operq = new SynchronousQueue();
         this.operq = new PriorityBlockingQueue<List<Oper>>(11,this);
         this.workers = new ArrayList<Worker>();
@@ -72,6 +73,15 @@ class Scheduler implements Comparator
 
     public Integer check_match(Node node)
     {
+
+        if(node.inport != null)
+        {
+            for(int i = 0 ; i < node.inport.length ; i++)
+            {
+                System.out.println("Node[" + i + "]: " + node.inport[i]);
+            }
+        }
+
         for(int i = 0 ; i < node.inport[0].size() ; i++)
         {
             TagVal tv = node.inport[0].get(i);
