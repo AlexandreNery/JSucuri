@@ -2,6 +2,7 @@
  * Created by alexandrenery on 9/20/16.
  */
 
+import java.nio.channels.Pipe;
 import java.util.*;
 import java.util.concurrent.*;
 import java.io.*;
@@ -25,7 +26,7 @@ class Scheduler implements Comparator
         this.mpi_enabled = mpi_enabled; //must always be false, for now at least...
 
         //this.operq = new SynchronousQueue();
-        this.operq = new PriorityBlockingQueue<List<Oper>>(11,this);
+        this.operq = new PriorityBlockingQueue<List<Oper>>(10,this); //10 foi escolhido aleatoriamente
         this.workers = new ArrayList<Worker>();
         this.graph = graph;
         this.tasks = new ArrayList<Task>();
@@ -171,18 +172,17 @@ class Scheduler implements Comparator
         {
             List<TagVal> port = node.inport[i];
 
-            int pos = 0;
+            List<TagVal> laux = new ArrayList<TagVal>();
             for(int j = 0 ; j < port.size() ; j++)
             {
-                TagVal tv = port.get(j);
-                if(tv.tag == tag)
-                {
-                    pos = j;
-                    args.add(tv.val);
-                }
+                TagVal tagval = port.get(j);
+                if(tagval.tag == tag)
+                    laux.add(tagval);
             }
 
-            port.remove(pos);
+            TagVal tv = laux.get(0);
+            args.add(tv.val);
+            port.remove(tv);
         }
 
         Task t = new Task(node.nf, node.id, args.toArray());
@@ -196,16 +196,50 @@ class Scheduler implements Comparator
 
     public void terminate_workers()
     {
-        for (int i = 0 ; i < this.workers.size() ; i++)
+        for (int i= 0 ; i < this.worker_conns.size() ; i++) {
+            PipedInputStream pi = this.worker_conns.get(i);
+            try {
+                pi.close();
+            }catch(IOException e)
+            {
+                System.out.println("Cannot close PipedInputStream. " + e);
+                e.printStackTrace();
+            }
+        }
+
+        for (int i= 0 ; i < this.conn.size() ; i++) {
+            PipedOutputStream po = this.conn.get(i);
+            try {
+                po.close();
+            }catch(IOException e)
+            {
+                System.out.println("Cannot close PipedOutputStream. " + e);
+                e.printStackTrace();
+            }
+        }
+
+        System.out.println("Terminating workers " + all_idle() + " " + operq.size() + " " + tasks.size());
+        for (Worker w : workers)
         {
-            Worker w = this.workers.get(i);
+            PipedInputStream pi = w.getPipeInput();
+            try{
+                pi.close();
+            }
+            catch(IOException e)
+            {
+                e.printStackTrace();
+            }
+
+            w.terminate();
+
+            /*Worker w = this.workers.get(i);
             try{
                 w.join();
             }
             catch(InterruptedException e)
             {
                 e.printStackTrace();
-            }
+            }*/
         }
     }
 
@@ -292,6 +326,7 @@ class Scheduler implements Comparator
                     ObjectOutputStream oos = null;
                     try{
                         oos = new ObjectOutputStream(conn.get(worker.wid));
+                        //System.out.println("Sent: " + task);
                         oos.writeObject(task);
                         //oos.close();
                     }catch (IOException e)
@@ -311,6 +346,7 @@ class Scheduler implements Comparator
         }
         System.out.println("Waiting " + this.waiting.size());
         terminate_workers();
+        System.out.println("Scheduler finished!");
     }
 
     public int compare(Object o1, Object o2)

@@ -15,10 +15,12 @@ class Worker extends Thread
     public PipedInputStream conn; //piped input stream
     public Integer wid;
     public boolean idle;
+    private boolean terminate;
 
     //public Worker(DFGraph graph, SynchronousQueue operand_queue, PipedInputStream conn, int workerid)
     public Worker(DFGraph graph, PriorityBlockingQueue operand_queue, PipedInputStream conn, int workerid)
     {
+        this.terminate = false;
         this.operq = operand_queue;
         this.idle = false;
         this.graph = graph;
@@ -34,6 +36,16 @@ class Worker extends Thread
         }*/
     }
 
+    public void terminate()
+    {
+        this.terminate = true;
+    }
+
+    public PipedInputStream getPipeInput()
+    {
+        return this.conn;
+    }
+
     @Override
     public void run()
     {
@@ -43,24 +55,28 @@ class Worker extends Thread
 
         this.operq.put(l); //request a task to start
 
-        while(true)
+        //while(true)
+        while(!terminate)
         {
             Task task;
             Node node;
             ObjectInputStream ois = null;
 
             try{
-                ois = new ObjectInputStream(this.conn);
-                task = (Task) ois.readObject();
-                node = this.graph.nodes.get(task.nodeid);
-                node.run(task.args, this.wid, this.operq);
-                //ois.close();
+                if(this.conn.available() > 0) {
+                    ois = new ObjectInputStream(this.conn);
+                    task = (Task) ois.readObject();
+                    //System.out.println("Recv: " + task);
+                    node = this.graph.nodes.get(task.nodeid);
+                    node.run(task.args, this.wid, this.operq);
+                }
             }
             catch(Exception e)
             {
                 e.printStackTrace();
             }
         }
+        System.out.println("Worker finished!");
     }
 }
 
