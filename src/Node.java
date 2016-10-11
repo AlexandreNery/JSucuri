@@ -40,7 +40,7 @@ class Node
 
     public void add_edge(Node dst, Integer dstport)
     {
-        //this.dsts.add(new Edge(dst.id, dstport));
+        //this.dsts.add(new Edge(dst.id, dstport))
         this.dsts.add(new Edge(dst.id, dstport));
     }
 
@@ -83,7 +83,7 @@ class Node
     {
         List opers = new ArrayList();
 
-        if(this.dsts.size() == 0)
+        if(this.getDsts().size() == 0)
         {
             opers.add(new Oper(workerid,null,null,null));
         }
@@ -98,4 +98,9 @@ class Node
         }
         return opers;
     }
+
+     public List<TagVal>[] getInport(){
+         return inport;
+     }
+    public List getDsts(){return dsts;}
 }
