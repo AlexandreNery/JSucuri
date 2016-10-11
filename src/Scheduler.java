@@ -74,15 +74,15 @@ class Scheduler implements Comparator
 
     public Integer check_match(Node node)
     {
-        for(int i = 0 ; i < node.inport[0].size() ; i++)
+        for(int i = 0 ; i < node.getInport()[0].size() ; i++)
         {
-            TagVal tv = node.inport[0].get(i);
+            TagVal tv = node.getInport()[0].get(i);
             //System.out.println(tv);
             int count = 1;
 
-            for(int j = 1 ; j < node.inport.length ; j++) //j = i + 1 (errado!)
+            for(int j = 1 ; j < node.getInport().length ; j++)//j = i + 1 (errado!)
             {
-                List<TagVal> port = node.inport[j];
+                List<TagVal> port = node.getInport()[j];
                 //System.out.print(j + ":");
                 //for(int k = 0 ; k < port.size() ; k++)
                 //    System.out.print("" + port.get(k));
@@ -106,7 +106,7 @@ class Scheduler implements Comparator
             //System.out.println("inport.length = " + node.inport.length);
 
 
-            if(count == node.inport.length)
+            if(count == node.getInport().length)
                 return tv.tag;
         }
 
@@ -168,9 +168,9 @@ class Scheduler implements Comparator
     {
         List<Object> args = new ArrayList<Object>();
 
-        for(int i = 0 ; i < node.inport.length ; i++)
+        for(int i = 0 ; i < node.getInport().length ; i++)
         {
-            List<TagVal> port = node.inport[i];
+            List<TagVal> port = node.getInport()[i];
 
             List<TagVal> laux = new ArrayList<TagVal>();
             for(int j = 0 ; j < port.size() ; j++)
