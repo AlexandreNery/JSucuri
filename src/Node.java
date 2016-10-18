@@ -61,11 +61,6 @@ class Node
         }
         else
         {
-            /*System.out.println("Worker " + workerid + " running node " + id);
-            for(int i = 0 ; i < args.length ; i++)
-            {
-                System.out.println("node" + this.id + " input args[" + i + "]:" + args[i]);
-            }*/
             Object value = this.nf.f(args);
             List opers = create_oper(value, workerid, operq,0); //default tag = 0
             sendops(opers,operq);
