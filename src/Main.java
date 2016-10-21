@@ -1,4 +1,5 @@
 import java.io.Serializable;
+import java.util.Hashtable;
 
 public class Main {
 
@@ -6,18 +7,23 @@ public class Main {
 	// write your code here
         DFGraph dfg = new DFGraph();
 
+        Hashtable sm = new Hashtable();
+
         NodeFunction soma = (NodeFunction & Serializable) (Object[] inputs) -> {
             Integer result;
             result = new Integer(0);
 
             result = ((Integer) inputs[0] + (Integer) inputs[1]);
 
+            sm.put("Porra","Kcete");
             return result;
             };
 
         NodeFunction printResult = (NodeFunction & Serializable) (Object[] inputs) -> {
 
             System.out.println("Result: " + inputs[0]);
+            System.out.println(sm);
+            System.out.println("Dado:" + sm.get("Porra"));
             return null;
         };
 

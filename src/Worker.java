@@ -68,6 +68,7 @@ class Worker extends Thread
                     task = (Task) ois.readObject();
                     //System.out.println("Recv: " + task);
                     node = this.graph.nodes.get(task.nodeid);
+
                     node.run(task.args, this.wid, this.operq);
                 }
             }

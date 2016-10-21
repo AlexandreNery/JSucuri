@@ -21,8 +21,12 @@ class Scheduler implements Comparator
     List<Worker> workers;
     boolean mpi_enabled;
 
+    private Hashtable sm;
+
     public Scheduler(DFGraph graph, Integer n_workers, boolean mpi_enabled)
     {
+        this.sm = new Hashtable();
+
         this.mpi_enabled = mpi_enabled; //must always be false, for now at least...
 
         //this.operq = new SynchronousQueue();
@@ -68,7 +72,6 @@ class Scheduler implements Comparator
         {
             workers.add(new Worker(this.graph, this.operq, worker_conns.get(i), i)); //i = workerid
         }
-
 
     }
 
@@ -184,6 +187,8 @@ class Scheduler implements Comparator
             args.add(tv.val);
             port.remove(tv);
         }
+
+        //args.add(sm);
 
         Task t = new Task(node.nf, node.id, args.toArray());
         tasks.add(t);
