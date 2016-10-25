@@ -50,7 +50,7 @@ class Node
     }
 
     //public void run(Object[] args, Integer workerid, SynchronousQueue operq)
-    public void run(Object[] args, Integer workerid, PriorityBlockingQueue operq)
+    public void run(Object[] args, Integer workerid, ArrayBlockingQueue operq)
     {
         if(inport == null)
         {
@@ -68,13 +68,18 @@ class Node
     }
 
     //public void sendops(List opers, SynchronousQueue operq)
-    public void sendops(List opers, PriorityBlockingQueue operq)
+    public void sendops(List opers, ArrayBlockingQueue operq)
     {
-        operq.put(opers);
+        try {
+            operq.put(opers);
+        }catch(InterruptedException e)
+        {
+            System.out.println("operq.put error: " + e);
+        }
     }
 
     //public List create_oper(Object value, Integer workerid, SynchronousQueue operq, Integer tag)
-    public List create_oper(Object value, Integer workerid, PriorityBlockingQueue operq, Integer tag)
+    public List create_oper(Object value, Integer workerid, ArrayBlockingQueue operq, Integer tag)
     {
         List opers = new ArrayList();
 

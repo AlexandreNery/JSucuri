@@ -7,10 +7,11 @@ import java.util.*;
 import java.util.concurrent.*;
 import java.io.*;
 
-class Scheduler implements Comparator
+//class Scheduler implements Comparator
+class Scheduler
 {
     //SynchronousQueue operq;
-    PriorityBlockingQueue<List<Oper>> operq;
+    ArrayBlockingQueue<List<Oper>> operq;
     DFGraph graph;
     List<Task> tasks;
     List<PipedInputStream> worker_conns;
@@ -30,7 +31,8 @@ class Scheduler implements Comparator
         this.mpi_enabled = mpi_enabled; //must always be false, for now at least...
 
         //this.operq = new SynchronousQueue();
-        this.operq = new PriorityBlockingQueue<List<Oper>>(10,this); //10 foi escolhido aleatoriamente
+        //this.operq = new PriorityBlockingQueue<List<Oper>>(10,this); //10 foi escolhido aleatoriamente
+        this.operq = new ArrayBlockingQueue<List<Oper>>(10);
         this.workers = new ArrayList<Worker>();
         this.graph = graph;
         this.tasks = new ArrayList<Task>();
@@ -354,9 +356,9 @@ class Scheduler implements Comparator
         System.out.println("Scheduler finished!");
     }
 
+    /*
     public int compare(Object o1, Object o2)
     {
-
         Oper op1 = (Oper) o1;
         Oper op2 = (Oper) o2;
 
@@ -373,7 +375,7 @@ class Scheduler implements Comparator
             return 0;
         }
     }
-
+*/
 
 }
 

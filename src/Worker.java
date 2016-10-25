@@ -11,14 +11,14 @@ class Worker extends Thread
 {
     public DFGraph graph;
     //private SynchronousQueue operq;
-    public PriorityBlockingQueue operq;
+    public ArrayBlockingQueue operq;
     public PipedInputStream conn; //piped input stream
     public Integer wid;
     public boolean idle;
     private boolean terminate;
 
     //public Worker(DFGraph graph, SynchronousQueue operand_queue, PipedInputStream conn, int workerid)
-    public Worker(DFGraph graph, PriorityBlockingQueue operand_queue, PipedInputStream conn, int workerid)
+    public Worker(DFGraph graph, ArrayBlockingQueue operand_queue, PipedInputStream conn, int workerid)
     {
         this.terminate = false;
         this.operq = operand_queue;
@@ -53,7 +53,12 @@ class Worker extends Thread
         List l = new ArrayList();
         l.add(new Oper(this.wid, null, null, null));
 
-        this.operq.put(l); //request a task to start
+        try {
+            this.operq.put(l); //request a task to start
+        }catch(InterruptedException e)
+        {
+            System.out.println("operq.put error:" + e);
+        }
 
         //while(true)
         while(!terminate)

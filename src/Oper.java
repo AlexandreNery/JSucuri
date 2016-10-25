@@ -1,8 +1,10 @@
+import java.util.*;
+
 /**
  * Created by alexandrenery on 9/20/16.
  */
 
-class Oper
+class Oper implements Comparable<Oper>
 {
     Integer wid; //id of the worker that produced the oper
     Integer dstid; //id of the target task
@@ -41,8 +43,6 @@ class Oper
     }
 */
 
-    /*
-    @Override
     public int compareTo(Oper other)
     {
         if(!(other instanceof Oper))
@@ -62,7 +62,38 @@ class Oper
             return 0;
         }
     }
-    */
+
+    /*
+    public String toString()
+    {
+        return "" + this.tag;
+    }
+
+    public static void main(String args[])
+    {
+        Oper o1 = new Oper(0,0,0,null);
+        Oper o2 = new Oper(0,0,0,null);
+        Oper o3 = new Oper(0,0,0,null);
+
+        o1.tag = 0;
+        o2.tag = 9;
+        o3.tag = 2;
+
+        List<Oper> l = new ArrayList<Oper>();
+
+        l.add(o1);
+        l.add(o2);
+        l.add(o3);
+
+
+        for(int i = 0 ; i < l.size() ; i++)
+        {
+            System.out.println(l.get(i));
+        }
+
+    }
+*/
+
 
 }
 

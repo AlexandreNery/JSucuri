@@ -1,7 +1,7 @@
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.PriorityBlockingQueue;
+import java.util.concurrent.ArrayBlockingQueue;
 import java.io.BufferedReader;
 
 /**
@@ -24,7 +24,7 @@ class Source extends Node {
         this.dsts = new ArrayList();
     }
 
-    public void run(Object[] args, Integer workerid, PriorityBlockingQueue operq){
+    public void run(Object[] args, Integer workerid, ArrayBlockingQueue operq){
         try {
             String line;
             while ((line = it.readLine()) != null) {
@@ -63,7 +63,7 @@ class Source extends Node {
         this.dsts.add(new Edge(dst.id, dstport));
     }
 
-    public List create_oper(Object value, Integer workerid, PriorityBlockingQueue operq, Integer tag)
+    public List create_oper(Object value, Integer workerid, ArrayBlockingQueue operq, Integer tag)
     {
         List opers = new ArrayList();
 
