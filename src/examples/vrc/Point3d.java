@@ -1,5 +1,10 @@
+package examples.vrc;
 
-class Point3d
+/**
+ * Created by alexandrenery on 10/26/16.
+ */
+
+public class Point3d
 {
     float x;
     float y;
@@ -21,12 +26,12 @@ class Point3d
 
     public float distance()
     {
-        return Math.sqrt(this.x*this.x + this.y*this.y + this.z*this.z);
+        return (float) Math.sqrt(this.x*this.x + this.y*this.y + this.z*this.z);
     }
 
     public static float distance(Point3d p)
     {
-        return Math.sqrt(p.x*p.x + p.y*p.y + p.z*p.z);
+        return (float) Math.sqrt(p.x*p.x + p.y*p.y + p.z*p.z);
     }
 
     public static float p2p_distance(Point3d p1, Point3d p2)
@@ -35,7 +40,7 @@ class Point3d
         float dif2 = p2.y - p1.y;
         float dif3 = p2.z - p1.z;
 
-        return Math.sqrt(dif1*dif1 + dif2*dif2 + dif3*dif3);
+        return (float) Math.sqrt(dif1*dif1 + dif2*dif2 + dif3*dif3);
     }
 
     public void normalize()
@@ -66,4 +71,12 @@ class Point3d
     {
         return a.x*b.x + a.y*b.y + a.z*b.z;
     }
+
+    public void scale(float s)
+    {
+        this.x *= s;
+        this.y *= s;
+        this.z *= s;
+    }
+
 }
