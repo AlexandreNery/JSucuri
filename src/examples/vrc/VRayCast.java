@@ -43,6 +43,7 @@ public class VRayCast {
         float rcp_samples = 1.0f / (float) samples;
 
         System.out.println("Tracing...");
+        long time1 = System.currentTimeMillis();
 
         for (int i = 0; i < cam.getWidth(); i++) {
             for (int j = 0; j < cam.getHeight(); j++) {
@@ -82,6 +83,9 @@ public class VRayCast {
                 im.setRGB(i, j, c.getRGB());
             }
         }
+
+        long time2 = System.currentTimeMillis();
+        System.out.println("Time: " + (time2 - time1) + " ms");
 
         File outputfile = new File("output.png");
         ImageIO.write(im, "png", outputfile);
