@@ -113,11 +113,11 @@ public class Camera {
         //printTable(m);
 
         Point3d o = new Point3d(0.0f,0.0f,0.0f);
-        //Point3d d = new Point3d(0.0f,0.0f,0.0f);
+        Point3d d = new Point3d(0.0f,0.0f,0.0f);
 
         //ray.o.x = ray.o.y = ray.o.z = 0.0;
 
-        Point3d d = get_sample_pos(x, y, sample);
+        d = get_sample_pos(x, y, sample);
 
         d.z = (1.0f/HALF_FOV);
         d.x = (d.x * RAY_MAG);
@@ -131,8 +131,8 @@ public class Camera {
         float fooZ = dir.x * m[2][0] + dir.y * m[2][1] + dir.z * m[2][2];
 
         float origX = o.x * m[0][0] + o.y * m[0][1] + o.z * m[0][2] + eye.x;
-        float origY = o.x * m[1][0] + o.y * m[1][1] + o.z * m[1][2] + eye.x;
-        float origZ = o.x * m[2][0] + o.y * m[2][1] + o.z * m[2][2] + eye.x;
+        float origY = o.x * m[1][0] + o.y * m[1][1] + o.z * m[1][2] + eye.y;
+        float origZ = o.x * m[2][0] + o.y * m[2][1] + o.z * m[2][2] + eye.z;
 
         o.x = (origX);
         o.y = (origY);

@@ -169,7 +169,7 @@ public class Grid {
             dty = (t_max.y - t_min.y) / (float) ny;
             dtz = (t_max.z - t_min.z) / (float) nz;
 
-            if (rd.x > 0) {
+            if (rd.x > 0.0f) {
                 tx_next = t_min.x + (ix + 1) * dtx;
                 ix_step = +1;
                 ix_stop = nx;
@@ -179,7 +179,7 @@ public class Grid {
                 ix_stop = -1;
             }
 
-            if (rd.y > 0) {
+            if (rd.y > 0.0f) {
                 ty_next = t_min.y + (iy + 1) * dty;
                 iy_step = +1;
                 iy_stop = ny;
@@ -189,7 +189,7 @@ public class Grid {
                 iy_stop = -1;
             }
 
-            if (rd.z > 0) {
+            if (rd.z > 0.0f) {
                 tz_next = t_min.z + (iz + 1) * dtz;
                 iz_step = +1;
                 iz_stop = nz;
