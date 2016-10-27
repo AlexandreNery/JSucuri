@@ -1,14 +1,13 @@
-/**
+package jsucuri; /**
  * Created by alexandrenery on 9/20/16.
  */
 
-import java.nio.channels.Pipe;
 import java.util.*;
 import java.util.concurrent.*;
 import java.io.*;
 
-//class Scheduler implements Comparator
-class Scheduler
+//class jsucuri.Scheduler implements Comparator
+public class Scheduler
 {
     //SynchronousQueue operq;
     ArrayBlockingQueue<List<Oper>> operq;
@@ -31,7 +30,7 @@ class Scheduler
         this.mpi_enabled = mpi_enabled; //must always be false, for now at least...
 
         //this.operq = new SynchronousQueue();
-        //this.operq = new PriorityBlockingQueue<List<Oper>>(10,this); //10 foi escolhido aleatoriamente
+        //this.operq = new PriorityBlockingQueue<List<jsucuri.Oper>>(10,this); //10 foi escolhido aleatoriamente
         this.operq = new ArrayBlockingQueue<List<Oper>>(10);
         this.workers = new ArrayList<Worker>();
         this.graph = graph;
@@ -120,24 +119,24 @@ class Scheduler
     }
 
 /*
-    public Integer check_match(Node node)
+    public Integer check_match(jsucuri.Node node)
     {
         if(node.inport != null)
         {
             for(int i = 0 ; i < node.inport.length ; i++)
             {
-                System.out.println("Node[" + i + "]: " + node.inport[i]);
+                System.out.println("jsucuri.Node[" + i + "]: " + node.inport[i]);
             }
         }
 
         for(int i = 0 ; i < node.inport[0].size() ; i++)
         {
-            TagVal tv = node.inport[0].get(i);
+            jsucuri.TagVal tv = node.inport[0].get(i);
             int count = 1;
 
             for(int j = 1 ; j < node.inport.length ; j++)
             {
-                List<TagVal> port = node.inport[j];
+                List<jsucuri.TagVal> port = node.inport[j];
 
                 if(port.contains(tv))
                     count++;
@@ -239,7 +238,7 @@ class Scheduler
 
             w.terminate();
 
-            /*Worker w = this.workers.get(i);
+            /*jsucuri.Worker w = this.workers.get(i);
             try{
                 w.join();
             }
@@ -269,7 +268,7 @@ class Scheduler
             w.start();
         }
 
-        System.out.println("Main loop");
+        System.out.println("examples.simple.Main loop");
 
         main_loop();
     }
@@ -342,7 +341,7 @@ class Scheduler
                     }
                 }
 
-                /*else (Worker não-local, ou seja, MPI...)
+                /*else (jsucuri.Worker não-local, ou seja, MPI...)
                 {
 
                 }*/
@@ -353,14 +352,14 @@ class Scheduler
         }
         System.out.println("Waiting " + this.waiting.size());
         terminate_workers();
-        System.out.println("Scheduler finished!");
+        System.out.println("jsucuri.Scheduler finished!");
     }
 
     /*
     public int compare(Object o1, Object o2)
     {
-        Oper op1 = (Oper) o1;
-        Oper op2 = (Oper) o2;
+        jsucuri.Oper op1 = (jsucuri.Oper) o1;
+        jsucuri.Oper op2 = (jsucuri.Oper) o2;
 
         if(op1.tag > op2.tag)
         {

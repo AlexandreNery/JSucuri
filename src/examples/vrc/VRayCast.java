@@ -2,10 +2,10 @@ package examples.vrc;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
-import java.util.Random;
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import jsucuri.*;
+
 /**
  * Created by alexandrenery on 10/26/16.
  */

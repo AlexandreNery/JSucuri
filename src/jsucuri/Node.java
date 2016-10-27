@@ -1,4 +1,4 @@
-/**
+package jsucuri; /**
  * Created by alexandrenery on 9/20/16.
  */
 
@@ -6,7 +6,7 @@ import java.util.*;
 import java.util.concurrent.*;
 
 
-class Node
+public class Node
 {
     NodeFunction nf;
     List<TagVal> inport[];
@@ -40,7 +40,7 @@ class Node
 
     public void add_edge(Node dst, Integer dstport)
     {
-        //this.dsts.add(new Edge(dst.id, dstport))
+        //this.dsts.add(new jsucuri.Edge(dst.id, dstport))
         this.dsts.add(new Edge(dst.id, dstport));
     }
 
@@ -54,7 +54,7 @@ class Node
     {
         if(inport == null)
         {
-            System.out.println("Worker " + workerid + " running node " + id + " with (null args)");
+            System.out.println("jsucuri.Worker " + workerid + " running node " + id + " with (null args)");
             Object value = this.nf.f(null);
             List opers = create_oper(value, workerid, operq,0); //default tag = 0
             sendops(opers,operq);

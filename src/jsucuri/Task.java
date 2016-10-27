@@ -1,10 +1,10 @@
-/**
+package jsucuri; /**
  * Created by alexandrenery on 9/20/16.
  */
 
 import java.io.*;
 
-class Task implements Serializable
+public class Task implements Serializable
 {
     Integer nodeid;
     Object[] args;

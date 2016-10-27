@@ -1,3 +1,5 @@
+package jsucuri;
+
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -68,7 +70,7 @@ public class LCS {
 
         for(int i=0; i < gH;i++) {
             for (int j = 0; j < gW; j++) {
-                System.out.println("Node (" +i+","+j+") " +inputs(i,j));
+                System.out.println("jsucuri.Node (" +i+","+j+") " +inputs(i,j));
                 lcsGraph.add((Node)G[i][j]);
             }
         }
@@ -77,13 +79,13 @@ public class LCS {
             for (int j = 0; j < gW; j++) {
                 if(i > 0){
                     //create edge from  upper neighbor
-                    //#print 'Edge (%d,%d) -> (%d,%d)[%d]' % (i-1,j,i,j,0)
+                    //#print 'jsucuri.Edge (%d,%d) -> (%d,%d)[%d]' % (i-1,j,i,j,0)
                     ((N2D)G[i-1][j]).add_edge(((Node)G[i][j]), 0, 0);
                     graph+= "N2D_"+(i-1)+"_"+j+ "-> Node_"+i+"_"+j+ "_" + 0 + "_"+0+";\n";
 
                 }if(j > 0){
                     //create edge from left neighor
-                    //#print 'Edge (%d,%d) -> (%d,%d)[%d]' % (i,j-1,i,j, int(i>0))
+                    //#print 'jsucuri.Edge (%d,%d) -> (%d,%d)[%d]' % (i,j-1,i,j, int(i>0))
                     ((N2D)G[i][j-1]).add_edge((Node)G[i][j], (i > 0 ? 1 : 0) ,1);
                     graph+= "N2D_"+(i)+"_"+(j-1)+ "-> Node_"+i+"_"+j+ "_" + (i > 0 ? 1 : 0) + "_"+0+";\n";
                 }
@@ -125,7 +127,7 @@ public class LCS {
             endB = startB+block;
         int lsizeA = endA - startA;
         int lsizeB = endB - startB;
-    //print 'Node (%d,%d) calculates (%d,%d) - (%d,%d)' % (i,j, startB,startA,endB,endA)
+    //print 'jsucuri.Node (%d,%d) calculates (%d,%d) - (%d,%d)' % (i,j, startB,startA,endB,endA)
 
         int SM[][] = new int[lsizeA+1][lsizeB+1];
         for(int x = 0; x < lsizeA+1; x++){

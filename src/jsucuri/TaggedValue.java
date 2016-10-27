@@ -1,3 +1,5 @@
+package jsucuri;
+
 import java.io.Serializable;
 
 /**
@@ -22,8 +24,8 @@ public class TaggedValue implements Serializable {
         if(taggedValue2==null)
             return 1;
         if(!(this instanceof TaggedValue))
-            //throw new Exception("can only compare TaggedValue with TaggedValue.");
-            System.out.println("can only compare TaggedValue with TaggedValue.");
+            //throw new Exception("can only compare jsucuri.TaggedValue with jsucuri.TaggedValue.");
+            System.out.println("can only compare jsucuri.TaggedValue with jsucuri.TaggedValue.");
         if(this.tag > taggedValue2.tag)
             return 1;
         else if(this.tag < taggedValue2.tag)

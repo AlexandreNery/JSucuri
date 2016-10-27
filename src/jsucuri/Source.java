@@ -1,3 +1,5 @@
+package jsucuri;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +10,7 @@ import java.io.BufferedReader;
  * Created by marcos on 01/10/16.
  */
 
-class Source extends Node {
+public class Source extends Node {
     List<TagVal> inport[];
     List dsts;
     Integer tagcounter = 0;
@@ -59,7 +61,7 @@ class Source extends Node {
 
     public void add_edge(Node dst, Integer dstport)
     {
-        //this.dsts.add(new Edge(dst.id, dstport))
+        //this.dsts.add(new jsucuri.Edge(dst.id, dstport))
         this.dsts.add(new Edge(dst.id, dstport));
     }
 

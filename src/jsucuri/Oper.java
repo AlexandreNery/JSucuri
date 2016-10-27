@@ -1,10 +1,10 @@
-import java.util.*;
+package jsucuri;
 
 /**
  * Created by alexandrenery on 9/20/16.
  */
 
-class Oper implements Comparable<Oper>
+public class Oper implements Comparable<Oper>
 {
     Integer wid; //id of the worker that produced the oper
     Integer dstid; //id of the target task
@@ -26,7 +26,7 @@ class Oper implements Comparable<Oper>
 
 /*
     @Override
-    public int compare(Oper o1, Oper o2)
+    public int compare(jsucuri.Oper o1, jsucuri.Oper o2)
     {
         if(o1.tag > o2.tag)
         {
@@ -47,7 +47,7 @@ class Oper implements Comparable<Oper>
     {
         if(!(other instanceof Oper))
         {
-            System.out.println("can only compare Oper with Oper.");
+            System.out.println("can only compare jsucuri.Oper with jsucuri.Oper.");
         }
         if(this.tag > other.tag)
         {
@@ -71,15 +71,15 @@ class Oper implements Comparable<Oper>
 
     public static void main(String args[])
     {
-        Oper o1 = new Oper(0,0,0,null);
-        Oper o2 = new Oper(0,0,0,null);
-        Oper o3 = new Oper(0,0,0,null);
+        jsucuri.Oper o1 = new jsucuri.Oper(0,0,0,null);
+        jsucuri.Oper o2 = new jsucuri.Oper(0,0,0,null);
+        jsucuri.Oper o3 = new jsucuri.Oper(0,0,0,null);
 
         o1.tag = 0;
         o2.tag = 9;
         o3.tag = 2;
 
-        List<Oper> l = new ArrayList<Oper>();
+        List<jsucuri.Oper> l = new ArrayList<jsucuri.Oper>();
 
         l.add(o1);
         l.add(o2);

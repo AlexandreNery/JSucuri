@@ -1,3 +1,7 @@
+package examples.simple;
+
+import jsucuri.*;
+
 import java.io.Serializable;
 import java.util.Hashtable;
 

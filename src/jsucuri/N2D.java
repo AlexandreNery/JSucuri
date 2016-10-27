@@ -1,3 +1,5 @@
+package jsucuri;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.PriorityBlockingQueue;
@@ -31,7 +33,7 @@ public class N2D extends Node {
 
     public void add_edge(Node dst, Integer dstport, Integer srcport)
     {
-        //this.dsts.add(new Edge(dst.id, dstport))
+        //this.dsts.add(new jsucuri.Edge(dst.id, dstport))
         this.dsts.add(new Edge(dst.id, dstport, srcport));
     }
 
