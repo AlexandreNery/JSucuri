@@ -6,12 +6,12 @@ package jsucuri;
 
 public class Oper implements Comparable<Oper>
 {
-    Integer wid; //id of the worker that produced the oper
-    Integer dstid; //id of the target task
-    Integer dstport; //input port of the target task
-    Object value; //actual value of the operand
-    Integer tag;
-    boolean request_task;
+    public Integer wid; //id of the worker that produced the oper
+    public Integer dstid; //id of the target task
+    public Integer dstport; //input port of the target task
+    public Object value; //actual value of the operand
+    public Integer tag;
+    public boolean request_task;
 
     public Oper(Integer wid, Integer dstid, Integer dstport, Object value)
     {

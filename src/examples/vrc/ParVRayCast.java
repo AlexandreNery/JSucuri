@@ -9,7 +9,7 @@ import jsucuri.*;
 /**
  * Created by alexandrenery on 10/26/16.
  */
-public class VRayCast {
+public class ParVRayCast {
     public static void main(String args[]) throws Exception
     {
         int nx = 256;
@@ -34,7 +34,7 @@ public class VRayCast {
         min.scale(200.0f);
         max.scale(200.0f);
 
-        Camera cam = new Camera(2000, 1000, eye, lookat);
+        Camera cam = new Camera(600, 400, eye, lookat);
 
         Grid grid = new Grid(min, max, nx, ny, nz);
         BufferedImage im = new BufferedImage(cam.getWidth(), cam.getHeight(), BufferedImage.TYPE_3BYTE_BGR);
@@ -87,7 +87,7 @@ public class VRayCast {
         long time2 = System.currentTimeMillis();
         System.out.println("Time: " + (time2 - time1) + " ms");
 
-        File outputfile = new File("output_low.png");
+        File outputfile = new File("output.png");
         ImageIO.write(im, "png", outputfile);
 
         ImageIcon image = new ImageIcon(im);

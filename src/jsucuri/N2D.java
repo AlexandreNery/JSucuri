@@ -2,33 +2,46 @@ package jsucuri;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.PriorityBlockingQueue;
+import java.util.concurrent.ArrayBlockingQueue;
+
+import jsucuri.*;
 
 /**
  * Created by marcos on 08/10/16.
  */
 public class N2D extends Node {
 
-    NodeFunction nf;
-    List<TagVal> inport[];
-    List dsts;
-    Integer inputn;
-    Integer i;
-    Integer j;
+    public LCSNodeFunction nf;
+    public List<TagVal> inport[];
+    public List<Edge> dsts;
+    public Integer i;
+    public Integer j;
 
-    public N2D(NodeFunction nf, Integer inputn, Integer i, Integer j){
+    public N2D()
+    {
+        super();
+    }
+
+    public N2D(LCSNodeFunction nf, Integer inputn, Integer i, Integer j){
         this.nf = nf;
         this.inputn = inputn;
         this.i = i;
         this.j = j;
 
-        this.inport = new ArrayList[inputn];
+        //this.inport = new ArrayList[inputn];
         if(inputn > 0){
+            this.inport = new ArrayList[inputn];
+
             for (int k = 0 ; k < this.inport.length ; k++)
                 inport[k] = new ArrayList();
         }
+        else
+        {
+            this.inport = null;
+        }
 
         this.dsts = new ArrayList();
+        this.affinity = null;
     }
 
     public void add_edge(Node dst, Integer dstport, Integer srcport)
@@ -37,23 +50,47 @@ public class N2D extends Node {
         this.dsts.add(new Edge(dst.id, dstport, srcport));
     }
 
-    public void run(Object[] args, Integer workerid, PriorityBlockingQueue operq){
-        Object output;
-        if(inport.length == 0) {
-            args = new Object[2];
-            args[args.length-2] = i;
-            args[args.length-1] = j;
-            output = nf.f(args);
+    public void run(Object[] args, Integer workerid, ArrayBlockingQueue operq){
+        Object output[];
+
+        if(inport == null) {
+        //if(inport.length == 0) {
+            //args = new Object[2];
+            //args[args.length-2] = i;
+            //args[args.length-1] = j;
+            output = nf.f(null,this.i,this.j);
+            //output = nf.f(args);
         }else{
-            args = new Object[args.length+2];
-            args[args.length-1] = i;
-            args[args.length] = j;
-            output = nf.f(args);
+            //args = new Object[args.length+2];
+            //args[args.length-1] = i;
+            //args[args.length] = j;
+            output = nf.f(args,this.i,this.j);
         }
         List opers = create_oper(output, workerid, operq, 0);
+        sendops(opers,operq);
     }
 
-    public List create_oper(Object value, Integer workerid, PriorityBlockingQueue operq, Integer tag)
+    //public List create_oper(Object value, Integer workerid, SynchronousQueue operq, Integer tag)
+    public List create_oper(Object[] value, Integer workerid, ArrayBlockingQueue operq, Integer tag)
+    {
+        List opers = new ArrayList();
+
+        if(this.getDsts().size() == 0)
+        {
+            opers.add(new Oper(workerid,null,null,null));
+        }
+        else
+        {
+            dsts.forEach((e) -> {
+                Oper oper = new Oper(workerid, e.dst_id, e.dst_port, value[e.srcport]);
+                oper.tag = tag;
+                opers.add(oper);
+            });
+        }
+        return opers;
+    }
+
+    /*public List create_oper(Object value, Integer workerid, PriorityBlockingQueue operq, Integer tag)
     {
         List opers = new ArrayList();
 
@@ -75,7 +112,7 @@ public class N2D extends Node {
             });
         }
         return opers;
-    }
+    }*/
 
     public List getDsts(){
         return dsts;

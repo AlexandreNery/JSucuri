@@ -8,11 +8,12 @@ import java.util.concurrent.*;
 
 public class Node
 {
-    NodeFunction nf;
-    List<TagVal> inport[];
-    List dsts;
-    Integer id;
-    Integer affinity;
+    public NodeFunction nf;
+    public List<TagVal> inport[];
+    public List<Edge> dsts;
+    public Integer id;
+    public Integer affinity;
+    public Integer inputn;
 
     public Node()
     {
@@ -22,6 +23,7 @@ public class Node
     public Node(NodeFunction nf, Integer inputn)
     {
         this.nf = nf;
+        this.inputn = inputn;
 
         if(inputn > 0){
             this.inport = new ArrayList[inputn];
@@ -90,8 +92,7 @@ public class Node
         else
         {
             dsts.forEach((e) -> {
-                Edge edge = (Edge) e;
-                Oper oper = new Oper(workerid, edge.dst_id, edge.dst_port, value);
+                Oper oper = new Oper(workerid, e.dst_id, e.dst_port, value);
                 oper.tag = tag;
                 opers.add(oper);
             });

@@ -21,11 +21,11 @@ public class Scheduler
     List<Worker> workers;
     boolean mpi_enabled;
 
-    private Hashtable sm;
+    //private Hashtable sm;
 
     public Scheduler(DFGraph graph, Integer n_workers, boolean mpi_enabled)
     {
-        this.sm = new Hashtable();
+        //this.sm = new Hashtable();
 
         this.mpi_enabled = mpi_enabled; //must always be false, for now at least...
 
@@ -153,6 +153,10 @@ public class Scheduler
     public void propagate_op(Oper oper)
     {
         Node dst = this.graph.nodes.get(oper.dstid);
+
+        System.out.println("dst = " + dst);
+        System.out.println("dst.inport = " + dst.inport);
+        System.out.println("oper.dstport = " + oper.dstport);
 
         dst.inport[oper.dstport].add(new TagVal(oper.tag, oper.value));
 
