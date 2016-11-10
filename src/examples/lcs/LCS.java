@@ -1,7 +1,10 @@
+package examples.lcs;
+
+import jsucuri.*;
+
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-
 
 /**
  * Created by marcos on 08/10/16.
@@ -18,33 +21,31 @@ public class LCS {
 
     public static void main(String[] args) {
 
-        NodeFunction printLCS = (NodeFunction & Serializable) (Object[] inputs) -> {
-
-            System.out.println("Score: " + ((Object[])(inputs[0]))[-1]);
+        NodeFunction printLCS = (NodeFunction & Serializable) (Object[] argsn) -> {
+            System.out.println("Score: " + ((Object[])(argsn[0]))[-1]);
             return null;
         };
 
-        NodeFunction compute = (NodeFunction & Serializable) (Object[] inputs) -> {
-
+        LCSNodeFunction compute = (LCSNodeFunction & Serializable) (Object[] argsn, int i, int j) -> {
             //System.out.println("Score: " + ((Object[])(inputs[0]))[-1]);
-            int i = (int)inputs[inputs.length - 2];
-            int j = (int)inputs[inputs.length - 1];
-            LCS(i, j, inputs);
-            return LCS(i, j, inputs);
+            //int i = (int)argsn[argsn.length - 2];
+            //int j = (int)argsn[argsn.length - 1];
+            System.out.println("Compute " + i + "," + j);
+            LCS(i, j, argsn);
+            return LCS(i, j, argsn);
         };
 
         int nprocs = 1;//int(sys.argv[3])
         DFGraph lcsGraph = new DFGraph();
         Scheduler sched = new Scheduler(lcsGraph, nprocs, false);
 
-        String nameA = "seqA.txt";//sys.argv[1]
-        String nameB = "seqB.txt";//sys.argv[2]
-        String graph = "";
+        String nameA = "/Users/alexandrenery/IdeaProjects/JSucuri/src/examples/lcs/seqA.txt";//sys.argv[1]
+        String nameB = "/Users/alexandrenery/IdeaProjects/JSucuri/src/examples/lcs/seqB.txt";//sys.argv[2]
+
+        //String graph = "";
         try {
-        sA = new String(Files.readAllBytes(Paths.get(nameA)));
-        sB = new String(Files.readAllBytes(Paths.get(nameB)));
-
-
+            sA = new String(Files.readAllBytes(Paths.get(nameA)));
+            sB = new String(Files.readAllBytes(Paths.get(nameB)));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -58,7 +59,7 @@ public class LCS {
         gW = (int)(Math.ceil((float)(sizeA)/block));
         System.out.println("Grid "+gH+" x "+gW);
 
-        Object[][]G = new Object[gH][gW];
+        N2D[][]G = new N2D[gH][gW];
         for(int i=0; i< gH;i++){
             for(int j=0; j< gW; j++ ){
                 G[i][j] = new N2D(compute, inputs(i, j), i, j);
@@ -68,8 +69,8 @@ public class LCS {
 
         for(int i=0; i < gH;i++) {
             for (int j = 0; j < gW; j++) {
-                System.out.println("Node (" +i+","+j+") " +inputs(i,j));
-                lcsGraph.add((Node)G[i][j]);
+                //System.out.println("jsucuri.Node (" +i+","+j+") " +inputs(i,j));
+                lcsGraph.add(G[i][j]);
             }
         }
 
@@ -77,24 +78,24 @@ public class LCS {
             for (int j = 0; j < gW; j++) {
                 if(i > 0){
                     //create edge from  upper neighbor
-                    //#print 'Edge (%d,%d) -> (%d,%d)[%d]' % (i-1,j,i,j,0)
-                    ((N2D)G[i-1][j]).add_edge(((Node)G[i][j]), 0, 0);
-                    graph+= "N2D_"+(i-1)+"_"+j+ "-> Node_"+i+"_"+j+ "_" + 0 + "_"+0+";\n";
+                    //#print 'jsucuri.Edge (%d,%d) -> (%d,%d)[%d]' % (i-1,j,i,j,0)
+                    G[i-1][j].add_edge(G[i][j], 0, 0);
+                    //graph+= "N2D_"+(i-1)+"_"+j+ "-> Node_"+i+"_"+j+ "_" + 0 + "_"+0+";\n";
 
                 }if(j > 0){
                     //create edge from left neighor
-                    //#print 'Edge (%d,%d) -> (%d,%d)[%d]' % (i,j-1,i,j, int(i>0))
-                    ((N2D)G[i][j-1]).add_edge((Node)G[i][j], (i > 0 ? 1 : 0) ,1);
-                    graph+= "N2D_"+(i)+"_"+(j-1)+ "-> Node_"+i+"_"+j+ "_" + (i > 0 ? 1 : 0) + "_"+0+";\n";
+                    //#print 'jsucuri.Edge (%d,%d) -> (%d,%d)[%d]' % (i,j-1,i,j, int(i>0))
+                    G[i][j-1].add_edge(G[i][j], (i > 0 ? 1 : 0) ,1);
+                    //graph+= "N2D_"+(i)+"_"+(j-1)+ "-> Node_"+i+"_"+j+ "_" + (i > 0 ? 1 : 0) + "_"+0+";\n";
                 }
             }
         }
 
         Node R = new Node(printLCS, 1);
         lcsGraph.add(R);
-        ((N2D)G[gH-1][gH-1]).add_edge(R, 0, 0);
-        graph+= "N2D_"+(gH-1)+"_"+(gH-1)+ "-> R_"+ 0 + "_"+0+";\n";
-        System.out.println("Graph\n" +graph);
+        G[gH-1][gH-1].add_edge(R, 0, 0);
+        //graph+= "N2D_"+(gH-1)+"_"+(gH-1)+ "-> R_"+ 0 + "_"+0+";\n";
+        //System.out.println("Graph\n" +graph);
         sched.start();
 
 
@@ -125,7 +126,7 @@ public class LCS {
             endB = startB+block;
         int lsizeA = endA - startA;
         int lsizeB = endB - startB;
-    //print 'Node (%d,%d) calculates (%d,%d) - (%d,%d)' % (i,j, startB,startA,endB,endA)
+        //print 'jsucuri.Node (%d,%d) calculates (%d,%d) - (%d,%d)' % (i,j, startB,startA,endB,endA)
 
         int SM[][] = new int[lsizeA+1][lsizeB+1];
         for(int x = 0; x < lsizeA+1; x++){

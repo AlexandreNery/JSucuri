@@ -1,3 +1,5 @@
+package jsucuri;
+
 /**
  * Created by alexandrenery on 9/20/16.
  */

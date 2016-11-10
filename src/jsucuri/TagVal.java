@@ -1,8 +1,10 @@
+package jsucuri;
+
 /**
  * Created by alexandrenery on 9/20/16.
  */
 
-class TagVal
+public class TagVal
 {
     Integer tag;
     Object val;

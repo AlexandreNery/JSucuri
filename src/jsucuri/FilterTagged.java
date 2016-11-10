@@ -1,6 +1,8 @@
+package jsucuri;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.PriorityBlockingQueue;
+import java.util.concurrent.ArrayBlockingQueue;
 
 /**
  * Created by marcos on 01/10/16.
@@ -27,7 +29,7 @@ public class FilterTagged extends Node {
         this.affinity = null;
     }
 
-    public void run(Object[] args, Integer workerid, PriorityBlockingQueue operq){
+    public void run(Object[] args, Integer workerid, ArrayBlockingQueue operq){
         if(args[0] == null) {
             List opers = new ArrayList();
             opers.add(new Oper(workerid, null, null, null));

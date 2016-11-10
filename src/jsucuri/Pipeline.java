@@ -1,3 +1,5 @@
+package jsucuri;
+
 import java.io.*;
 
 /**

@@ -1,4 +1,4 @@
-/**
+package jsucuri; /**
  * Created by alexandrenery on 9/20/16.
  */
 
@@ -6,13 +6,14 @@ import java.util.*;
 import java.util.concurrent.*;
 
 
-class Node
+public class Node
 {
-    NodeFunction nf;
-    List<TagVal> inport[];
-    List dsts;
-    Integer id;
-    Integer affinity;
+    public NodeFunction nf;
+    public List<TagVal> inport[];
+    public List<Edge> dsts;
+    public Integer id;
+    public Integer affinity;
+    public Integer inputn;
 
     public Node()
     {
@@ -22,6 +23,7 @@ class Node
     public Node(NodeFunction nf, Integer inputn)
     {
         this.nf = nf;
+        this.inputn = inputn;
 
         if(inputn > 0){
             this.inport = new ArrayList[inputn];
@@ -40,7 +42,7 @@ class Node
 
     public void add_edge(Node dst, Integer dstport)
     {
-        //this.dsts.add(new Edge(dst.id, dstport))
+        //this.dsts.add(new jsucuri.Edge(dst.id, dstport))
         this.dsts.add(new Edge(dst.id, dstport));
     }
 
@@ -50,11 +52,11 @@ class Node
     }
 
     //public void run(Object[] args, Integer workerid, SynchronousQueue operq)
-    public void run(Object[] args, Integer workerid, PriorityBlockingQueue operq)
+    public void run(Object[] args, Integer workerid, ArrayBlockingQueue operq)
     {
         if(inport == null)
         {
-            System.out.println("Worker " + workerid + " running node " + id + " with (null args)");
+            System.out.println("jsucuri.Worker " + workerid + " running node " + id + " with (null args)");
             Object value = this.nf.f(null);
             List opers = create_oper(value, workerid, operq,0); //default tag = 0
             sendops(opers,operq);
@@ -68,13 +70,18 @@ class Node
     }
 
     //public void sendops(List opers, SynchronousQueue operq)
-    public void sendops(List opers, PriorityBlockingQueue operq)
+    public void sendops(List opers, ArrayBlockingQueue operq)
     {
-        operq.put(opers);
+        try {
+            operq.put(opers);
+        }catch(InterruptedException e)
+        {
+            System.out.println("operq.put error: " + e);
+        }
     }
 
     //public List create_oper(Object value, Integer workerid, SynchronousQueue operq, Integer tag)
-    public List create_oper(Object value, Integer workerid, PriorityBlockingQueue operq, Integer tag)
+    public List create_oper(Object value, Integer workerid, ArrayBlockingQueue operq, Integer tag)
     {
         List opers = new ArrayList();
 
@@ -85,8 +92,7 @@ class Node
         else
         {
             dsts.forEach((e) -> {
-                Edge edge = (Edge) e;
-                Oper oper = new Oper(workerid, edge.dst_id, edge.dst_port, value);
+                Oper oper = new Oper(workerid, e.dst_id, e.dst_port, value);
                 oper.tag = tag;
                 opers.add(oper);
             });

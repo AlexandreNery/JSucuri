@@ -1,9 +1,9 @@
-/**
+package jsucuri; /**
  * Created by alexandrenery on 9/21/16.
  */
 
 import java.util.*;
-import java.util.concurrent.PriorityBlockingQueue;
+import java.util.concurrent.ArrayBlockingQueue;
 
 public class Feeder extends Node {
 
@@ -15,7 +15,7 @@ public class Feeder extends Node {
         this.affinity = null;
     }
 
-    public void run(Object[] args, Integer workerid, PriorityBlockingQueue operq)
+    public void run(Object[] args, Integer workerid, ArrayBlockingQueue operq)
     {
         Object value = this.f();
         List opers = create_oper(value, workerid, operq,0); //default tag = 0

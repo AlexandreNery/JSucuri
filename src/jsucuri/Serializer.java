@@ -1,6 +1,8 @@
+package jsucuri;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.PriorityBlockingQueue;
+import java.util.concurrent.ArrayBlockingQueue;
 
 /**
  * Created by marcos on 01/10/16.
@@ -9,7 +11,7 @@ public class Serializer extends Node {
 
     Integer next_tag = 0;
     Object arg_buffer[];
-    //default affinity to Worker-0 (Serializer HAS to be pinned)
+    //default affinity to jsucuri.Worker-0 (jsucuri.Serializer HAS to be pinned)
     NodeFunction f;
     Integer affinity = 0;
     List<TagVal> inport[];
@@ -39,14 +41,14 @@ public class Serializer extends Node {
         inport[dstport].add(tagVal);
     }
 
-    public void run(Object[] args, Integer workerid, PriorityBlockingQueue operq){
+    public void run(Object[] args, Integer workerid, ArrayBlockingQueue operq){
         if(args==null || args[0]==null){
             List opers = new ArrayList();
             opers.add(new Oper(workerid, null, null, null));
             sendops(opers, operq);
         }else{
 
-            //print "Got operand with tag %d (expecting %d) Worker %d" %(args[0].tag, self.next_tag, workerid)
+            //print "Got operand with tag %d (expecting %d) jsucuri.Worker %d" %(args[0].tag, self.next_tag, workerid)
             //TODO wtf is that
 
             /*
@@ -68,7 +70,7 @@ public class Serializer extends Node {
                 int next = this.next_tag;
                 //argbuffer = this.arg_buffer;
 
-                //Integer buffertag = ((TaggedValue)(((ArrayList)argbuffer[0]).get(0))).tag;
+                //Integer buffertag = ((jsucuri.TaggedValue)(((ArrayList)argbuffer[0]).get(0))).tag;
                 Integer buffertag = ((TaggedValue)argbuffer[0]).tag;
                 while (buffertag == next){
                     args = argbuffer;

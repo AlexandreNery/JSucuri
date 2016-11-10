@@ -1,4 +1,4 @@
-/**
+package jsucuri; /**
  * Created by alexandrenery on 9/20/16.
  */
 
@@ -6,19 +6,19 @@ import java.util.*;
 import java.util.concurrent.*;
 import java.io.*;
 
-//Workers receive Tasks from Scheduler and Executes them
-class Worker extends Thread
+//Workers receive Tasks from jsucuri.Scheduler and Executes them
+public class Worker extends Thread
 {
     public DFGraph graph;
     //private SynchronousQueue operq;
-    public PriorityBlockingQueue operq;
+    public ArrayBlockingQueue operq;
     public PipedInputStream conn; //piped input stream
     public Integer wid;
     public boolean idle;
     private boolean terminate;
 
-    //public Worker(DFGraph graph, SynchronousQueue operand_queue, PipedInputStream conn, int workerid)
-    public Worker(DFGraph graph, PriorityBlockingQueue operand_queue, PipedInputStream conn, int workerid)
+    //public jsucuri.Worker(jsucuri.DFGraph graph, SynchronousQueue operand_queue, PipedInputStream conn, int workerid)
+    public Worker(DFGraph graph, ArrayBlockingQueue operand_queue, PipedInputStream conn, int workerid)
     {
         this.terminate = false;
         this.operq = operand_queue;
@@ -53,7 +53,12 @@ class Worker extends Thread
         List l = new ArrayList();
         l.add(new Oper(this.wid, null, null, null));
 
-        this.operq.put(l); //request a task to start
+        try {
+            this.operq.put(l); //request a task to start
+        }catch(InterruptedException e)
+        {
+            System.out.println("operq.put error:" + e);
+        }
 
         //while(true)
         while(!terminate)
@@ -77,7 +82,7 @@ class Worker extends Thread
                 e.printStackTrace();
             }
         }
-        System.out.println("Worker finished!");
+        System.out.println("jsucuri.Worker finished!");
     }
 }
 

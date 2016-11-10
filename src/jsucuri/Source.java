@@ -1,14 +1,16 @@
+package jsucuri;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.PriorityBlockingQueue;
+import java.util.concurrent.ArrayBlockingQueue;
 import java.io.BufferedReader;
 
 /**
  * Created by marcos on 01/10/16.
  */
 
-class Source extends Node {
+public class Source extends Node {
     List<TagVal> inport[];
     List dsts;
     Integer tagcounter = 0;
@@ -24,7 +26,7 @@ class Source extends Node {
         this.dsts = new ArrayList();
     }
 
-    public void run(Object[] args, Integer workerid, PriorityBlockingQueue operq){
+    public void run(Object[] args, Integer workerid, ArrayBlockingQueue operq){
         try {
             String line;
             while ((line = it.readLine()) != null) {
@@ -59,11 +61,11 @@ class Source extends Node {
 
     public void add_edge(Node dst, Integer dstport)
     {
-        //this.dsts.add(new Edge(dst.id, dstport))
+        //this.dsts.add(new jsucuri.Edge(dst.id, dstport))
         this.dsts.add(new Edge(dst.id, dstport));
     }
 
-    public List create_oper(Object value, Integer workerid, PriorityBlockingQueue operq, Integer tag)
+    public List create_oper(Object value, Integer workerid, ArrayBlockingQueue operq, Integer tag)
     {
         List opers = new ArrayList();
 

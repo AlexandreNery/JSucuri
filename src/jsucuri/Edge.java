@@ -1,8 +1,10 @@
+package jsucuri;
+
 /**
  * Created by alexandrenery on 9/20/16.
  */
 
-class Edge
+public class Edge
 {
     public Integer dst_id;
     public Integer dst_port;
