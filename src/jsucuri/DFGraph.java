@@ -11,7 +11,7 @@ public class DFGraph
 
     public DFGraph()
     {
-        nodes = new Vector<Node>();
+        nodes = new ArrayList<Node>();
         node_count = 0;
     }
 
@@ -20,6 +20,27 @@ public class DFGraph
         n.id = this.node_count;
         this.node_count += 1;
         nodes.add(n);
+    }
+
+    public String toString()
+    {
+        String ret = "Node count = " + node_count + "\n";
+
+        int cont = 0;
+        Iterator<Node> it = nodes.iterator();
+        while(it.hasNext())
+        {
+            Node n = it.next();
+            ret += "Node[" + n.id +"]\n";
+
+
+            for(int i = 0 ; i < n.dsts.size() ; i++) {
+
+                ret += "(" + n.id + "->" + n.dsts.get(i).dst_id + ")\n";
+            }
+        }
+
+        return ret;
     }
 
 }

@@ -1,6 +1,7 @@
 package jsucuri;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 
@@ -12,8 +13,6 @@ import jsucuri.*;
 public class N2D extends Node {
 
     public LCSNodeFunction nf;
-    public List<TagVal> inport[];
-    public List<Edge> dsts;
     public Integer i;
     public Integer j;
 
@@ -28,8 +27,15 @@ public class N2D extends Node {
         this.i = i;
         this.j = j;
 
+        this.inport = new ArrayList[inputn];
+        for(int k = 0 ; k < this.inport.length ; k++)
+            inport[k] = new ArrayList<TagVal>();
+
+        this.dsts = new ArrayList<Edge>();
+        this.affinity = null;
+
         //this.inport = new ArrayList[inputn];
-        if(inputn > 0){
+        /*if(inputn > 0){
             this.inport = new ArrayList[inputn];
 
             for (int k = 0 ; k < this.inport.length ; k++)
@@ -42,18 +48,27 @@ public class N2D extends Node {
 
         this.dsts = new ArrayList();
         this.affinity = null;
+        */
     }
 
     public void add_edge(Node dst, Integer dstport, Integer srcport)
     {
-        //this.dsts.add(new jsucuri.Edge(dst.id, dstport))
         this.dsts.add(new Edge(dst.id, dstport, srcport));
     }
 
     public void run(Object[] args, Integer workerid, ArrayBlockingQueue operq){
         Object output[];
 
-        if(inport == null) {
+        /*
+        System.out.println("inport.length = " + inport.length);
+        if(args != null) {
+            for (int i = 0; i < args.length; i++) {
+                System.out.println("args[" + i + "]:" + args[i]);
+            }
+        }
+        */
+
+        if(inport.length == 0) {
         //if(inport.length == 0) {
             //args = new Object[2];
             //args[args.length-2] = i;
@@ -90,6 +105,7 @@ public class N2D extends Node {
         return opers;
     }
 
+
     /*public List create_oper(Object value, Integer workerid, PriorityBlockingQueue operq, Integer tag)
     {
         List opers = new ArrayList();
@@ -113,9 +129,5 @@ public class N2D extends Node {
         }
         return opers;
     }*/
-
-    public List getDsts(){
-        return dsts;
-    }
 
 }

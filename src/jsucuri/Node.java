@@ -15,8 +15,14 @@ public class Node
     public Integer affinity;
     public Integer inputn;
 
+
     public Node()
     {
+        this.nf = null;
+        this.inputn = 0;
+        this.inport = new ArrayList[0];
+        this.dsts = new ArrayList<Edge>();
+        this.affinity = null;
 
     }
 
@@ -25,6 +31,14 @@ public class Node
         this.nf = nf;
         this.inputn = inputn;
 
+        this.inport = new ArrayList[inputn];
+        for(int i = 0 ; i < this.inport.length ; i++)
+            inport[i] = new ArrayList();
+
+        this.dsts = new ArrayList();
+        this.affinity = null;
+
+        /*
         if(inputn > 0){
             this.inport = new ArrayList[inputn];
 
@@ -38,11 +52,11 @@ public class Node
 
         this.dsts = new ArrayList();
         this.affinity = null;
+        */
     }
 
     public void add_edge(Node dst, Integer dstport)
     {
-        //this.dsts.add(new jsucuri.Edge(dst.id, dstport))
         this.dsts.add(new Edge(dst.id, dstport));
     }
 
@@ -54,7 +68,7 @@ public class Node
     //public void run(Object[] args, Integer workerid, SynchronousQueue operq)
     public void run(Object[] args, Integer workerid, ArrayBlockingQueue operq)
     {
-        if(inport == null)
+        if(inport.length == 0)
         {
             System.out.println("jsucuri.Worker " + workerid + " running node " + id + " with (null args)");
             Object value = this.nf.f(null);
@@ -73,6 +87,13 @@ public class Node
     public void sendops(List opers, ArrayBlockingQueue operq)
     {
         try {
+
+            //Iterator it = operq.iterator();
+            //while(it.hasNext())
+            //{
+            //    System.out.println("\toper: " + it.next());
+            //}
+
             operq.put(opers);
         }catch(InterruptedException e)
         {
@@ -100,7 +121,8 @@ public class Node
         return opers;
     }
 
-     public List<TagVal>[] getInport(){
+
+    public List<TagVal>[] getInport(){
          return inport;
      }
     public List getDsts(){return dsts;}
