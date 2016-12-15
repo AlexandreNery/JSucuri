@@ -154,9 +154,9 @@ public class Scheduler
     {
         Node dst = this.graph.nodes.get(oper.dstid);
 
-        System.out.println("dst = " + dst);
-        System.out.println("dst.inport = " + dst.inport);
-        System.out.println("oper.dstport = " + oper.dstport);
+        //System.out.println("dst = " + dst);
+        //System.out.println("dst.inport = " + dst.inport);
+        //System.out.println("oper.dstport = " + oper.dstport);
 
         dst.inport[oper.dstport].add(new TagVal(oper.tag, oper.value));
 
@@ -258,7 +258,7 @@ public class Scheduler
         for(int i = 0 ; i < this.graph.nodes.size() ; i ++)
         {
             Node n = this.graph.nodes.get(i);
-            if(n.inport == null || n.inport.length == 0) //if root node (no input ports)
+            if(n.inport.length == 0) //if root node (no input ports)
             {
                 Task t = new Task(n.nf,n.id,null);
                 this.tasks.add(t);
@@ -271,8 +271,6 @@ public class Scheduler
             System.out.println("Starting worker: " + w);
             w.start();
         }
-
-        System.out.println("examples.simple.Main loop");
 
         main_loop();
     }

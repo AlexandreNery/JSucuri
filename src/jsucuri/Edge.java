@@ -14,6 +14,7 @@ public class Edge
     {
         this.dst_id = dst_id;
         this.dst_port = dst_port;
+        this.srcport = 0;
     }
 
     public Edge(Integer dst_id, Integer dst_port, Integer srcport)
@@ -22,5 +23,6 @@ public class Edge
         this.dst_port = dst_port;
         this.srcport = srcport;
     }
+
 }
 
