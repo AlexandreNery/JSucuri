@@ -8,18 +8,19 @@ import java.util.ArrayList;
 import java.util.List;
 import jsucuri.*;
 import javax.imageio.ImageIO;
+import javax.management.Query;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 /**
  * Created by alexandrenery on 10/26/16. volumes
  * <numWorker> <numrayCastNodes> <imageFile> <imWidth> <imHeight> <numSamples>
- *  2 8 foot.raw 5120 2160 2
+ *  8 8 foot.raw 5120 2160 2
  */
 public class ParVRayCast2Jsucuri {
 
-	static float[] data = null;
-	static BufferedImage im = null;
+	//static float[] data = null;
+	//static BufferedImage im = null;
 	static int samples = 0;
 	static int numRayCastNodes;
 
@@ -36,7 +37,11 @@ public class ParVRayCast2Jsucuri {
 		int imHeight = new Integer(args[4]);
 		samples = new Integer(args[5]).intValue();
 
-		System.out.println("numWorkers:" + numWorkers);
+        //imWidth = 1280;
+        //imHeight = 720;
+
+
+        System.out.println("numWorkers:" + numWorkers);
 		System.out.println("numRayCastNodes:" + numRayCastNodes);
 		System.out.println("imWidth:" + imWidth);
 		System.out.println("imHeight:" + imHeight);
@@ -55,19 +60,25 @@ public class ParVRayCast2Jsucuri {
 		Camera cam = new Camera(imWidth, imHeight, eye, lookat);
 
 		Grid grid = new Grid(min, max, nx, ny, nz);
-		im = new BufferedImage(cam.getWidth(), cam.getHeight(), BufferedImage.TYPE_3BYTE_BGR);
+		//im = new BufferedImage(cam.getWidth(), cam.getHeight(), BufferedImage.TYPE_3BYTE_BGR);
 
 		float rcp_samples = 1.0f / (float) samples;
 
 		NodeFunction rayCast = (NodeFunction & Serializable) (Object[] inputs) -> {
 			int threadId = (int) inputs[0];
+			float[] data = (float[]) inputs[1];
+
 
 			int chunck = cam.getWidth() / numRayCastNodes;
+            BufferedImage im = new BufferedImage(chunck, cam.getHeight(), BufferedImage.TYPE_3BYTE_BGR);
+            List<java.awt.Color> colorList = new ArrayList<>();
 			System.out.println("chunck: " +chunck);
-			int start = threadId * chunck;
-			int end = start + chunck < cam.getWidth() ? start + chunck : cam.getWidth();
-			System.out.println("threadId: "+threadId + " start: "+start +" end: " + end);
-			for (int i = start; i < end; i++) {
+			//int start = threadId * chunck;
+			//int end = start + chunck < cam.getWidth() ? start + chunck : cam.getWidth();
+			//System.out.println("threadId: "+threadId + " start: "+start +" end: " + end);
+            int numberPixels = chunck*cam.getHeight();
+            System.out.println("Number of pixels: " + numberPixels);
+			for (int i = 0; i < chunck; i++) {
 				for (int j = 0; j < cam.getHeight(); j++) {
 					float r, g, b;
 					r = g = b = 0.0f;
@@ -100,15 +111,21 @@ public class ParVRayCast2Jsucuri {
 					// System.out.println("rgb = " + r + "," + g + "," + b);
 
 					java.awt.Color c = new java.awt.Color(r, g, b);
+                    //System.out.println("size"+ colorList.size());
+                    if(colorList.size() > numberPixels){
+                        System.out.println("Deu ruim"+ colorList.size());
+                    }
+					colorList.add(c);
 
-					im.setRGB(i, j, c.getRGB());
+					//im.setRGB(i, j, c.getRGB());
 				}
 			}
-			return 0;
+			return colorList;
 		};
 
 		NodeFunction readImage = (NodeFunction & Serializable) (Object[] inputs) -> {
-			try {
+            float[] data = null;
+		    try {
 				data = Util.loadRawFileFloats(filepath, nx * ny * nz);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
@@ -117,16 +134,44 @@ public class ParVRayCast2Jsucuri {
 			if (data == null) {
 				return null;
 			}
-			return 0;
+			return data;
 		};
 
 		NodeFunction outPrices = (NodeFunction & Serializable) (Object[] inputs) -> {
 			// System.out.println("prices " + inputs[0]);
 
-			RenderedImage image = im;// (RenderedImage) inputs[0];
+            BufferedImage im = new BufferedImage(cam.getWidth(), cam.getHeight(), BufferedImage.TYPE_3BYTE_BGR);
+			// (RenderedImage) inputs[0];
 			File outputfile = new File("output.png");
-			try {
-				ImageIO.write(image, "png", outputfile);
+            int chunck = cam.getWidth() / numRayCastNodes;
+
+			for(int indexNodes = 0; indexNodes < numRayCastNodes; indexNodes++){
+                int start = indexNodes * chunck;
+                int end = start + chunck < cam.getWidth() ? start + chunck : cam.getWidth();
+                System.out.println("Node: "+ indexNodes + " Start: " + start + " End: " + end);
+			    for(int indexWidth = start; indexWidth < end; indexWidth++){
+                    for(int indexHeight = 0; indexHeight < cam.getHeight(); indexHeight++){
+
+                        //BufferedImage imPartial = (BufferedImage)inputs[indexNodes];
+                        List<java.awt.Color> colorListPartial = (ArrayList<java.awt.Color>)inputs[indexNodes];
+                        /*int colorInt = imPartial.getRGB(indexHeight, indexWidth);
+
+                        int  r   = (colorInt & 0x00ff0000) >> 16;
+                        int  g = (colorInt & 0x0000ff00) >> 8;
+                        int  b  =  colorInt & 0x000000ff;
+                        java.awt.Color c = new java.awt.Color(r, g, b);*/
+                        java.awt.Color c = colorListPartial.get(indexWidth);
+                        //System.out.println(indexWidth +" "+ indexHeight);
+                        im.setRGB(indexWidth, indexHeight, c.getRGB());
+                    }
+                }
+
+                //System.out.println("chunck: " +chunck);
+
+            }
+            //RenderedImage image = im;
+            try {
+				ImageIO.write(im, "png", outputfile);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -175,5 +220,6 @@ public class ParVRayCast2Jsucuri {
 
 		long time2 = System.currentTimeMillis();
 		System.out.println("Time: " + (time2 - time1) + " ms");
+        System.out.println("Time: " + (time2 - time1)/1000 + " s");
 	}
 }
