@@ -1,11 +1,12 @@
 package examples.vrc;
 
+import java.io.Serializable;
 import java.util.*;
 
 /**
  * Created by alexandrenery on 10/26/16.
  */
-public class Camera {
+public class Camera implements Serializable{
 
     private int width;
     private int height;
