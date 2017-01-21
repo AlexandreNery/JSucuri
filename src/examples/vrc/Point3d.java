@@ -1,10 +1,12 @@
 package examples.vrc;
 
+import java.io.Serializable;
+
 /**
  * Created by alexandrenery on 10/26/16.
  */
 
-public class Point3d
+public class Point3d implements Serializable
 {
     float x;
     float y;

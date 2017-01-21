@@ -1,11 +1,12 @@
 package examples.vrc;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by alexandrenery on 10/26/16.
  */
-public class Grid {
+public class Grid implements Serializable{
     private Point3d t_min;
     private Point3d t_max;
     private Point3d p0;

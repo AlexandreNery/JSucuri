@@ -1,9 +1,11 @@
 package examples.vrc;
 
+import java.io.Serializable;
+
 /**
  * Created by alexandrenery on 10/26/16.
  */
-public class Ray
+public class Ray implements Serializable
 {
     Point3d o;
     Point3d t;
